@@ -11,10 +11,9 @@ import InterviewHistory from './pages/InterviewHistory'
 import Pricing from './pages/Pricing'
 import InterviewReport from './pages/InterviewReport'
 
-export const ServerUrl =  "https://talentlens-ai-5ore.onrender.com"
+export const ServerUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000"
 
 function App() {
-
   const dispatch = useDispatch()
   useEffect(()=>{
     const getUser = async () => {

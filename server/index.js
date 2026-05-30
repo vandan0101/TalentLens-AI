@@ -22,20 +22,12 @@ const isAllowedDevOrigin = (origin) => {
 }
 
 app.use(cors({
-    origin: (origin, callback) => {
-        if (!clientUrl) {
-            return callback(null, isAllowedDevOrigin(origin))
-        }
-
-        if (origin === clientUrl) {
-            return callback(null, true)
-        }
-
-        return callback(new Error("Not allowed by CORS"))
-    },
-    credentials:true
+  origin: [
+    "http://localhost:5173",
+    "https://talentlens-ai-app.onrender.com"
+  ],
+  credentials: true
 }))
-
 app.use(express.json())
 app.use(cookieParser())
 
