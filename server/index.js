@@ -12,7 +12,7 @@ import paymentRouter from "./routes/payment.route.js"
 const app = express()
 
 const allowedOrigins = [process.env.CLIENT_URL, "https://talentlens-ai-app.onrender.com"]
-    .filter(Boolean)
+  .filter(Boolean)
 
 const isAllowedOrigin = (origin) => {
     if (!origin) return true
@@ -20,8 +20,8 @@ const isAllowedOrigin = (origin) => {
     if (allowedOrigins.includes(origin)) return true
 
     try {
-        const { hostname } = new URL(origin)
-        return hostname === "localhost" || hostname === "127.0.0.1"
+    const { hostname } = new URL(origin)
+    return hostname === "localhost" || hostname === "127.0.0.1" || hostname.endsWith(".onrender.com")
     } catch {
         return false
     }

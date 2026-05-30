@@ -11,7 +11,25 @@ import InterviewHistory from './pages/InterviewHistory'
 import Pricing from './pages/Pricing'
 import InterviewReport from './pages/InterviewReport'
 
-export const ServerUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000"
+const getServerUrl = () => {
+  if (import.meta.env.VITE_SERVER_URL) {
+    return import.meta.env.VITE_SERVER_URL
+  }
+
+  if (typeof window !== "undefined") {
+    const { hostname } = window.location
+
+    if (hostname === "localhost" || hostname === "127.0.0.1") {
+      return "http://localhost:8000"
+    }
+
+    return window.location.origin
+  }
+
+  return "http://localhost:8000"
+}
+
+export const ServerUrl = getServerUrl()
 
 function App() {
   const dispatch = useDispatch()
