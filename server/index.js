@@ -10,9 +10,16 @@ import interviewRouter from "./routes/interview.route.js"
 import paymentRouter from "./routes/payment.route.js"
 
 const app = express()
+const isProduction = process.env.NODE_ENV === "production"
 
-const allowedOrigins = [process.env.CLIENT_URL, "https://talentlens-ai-app.onrender.com"]
-  .filter(Boolean)
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  ...(process.env.CLIENT_URLS || "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean),
+  "https://talentlens-ai-app.onrender.com"
+].filter(Boolean)
 
 const isAllowedOrigin = (origin) => {
     if (!origin) return true
@@ -20,11 +27,24 @@ const isAllowedOrigin = (origin) => {
     if (allowedOrigins.includes(origin)) return true
 
     try {
-    const { hostname } = new URL(origin)
-    return hostname === "localhost" || hostname === "127.0.0.1" || hostname.endsWith(".onrender.com")
+    const { hostname, protocol } = new URL(origin)
+
+    if (hostname === "localhost" || hostname === "127.0.0.1") {
+      return true
+    }
+
+    if (protocol !== "https:") {
+      return false
+    }
+
+    return hostname.endsWith(".onrender.com") || hostname.endsWith(".vercel.app")
     } catch {
         return false
     }
+}
+
+if (isProduction) {
+  app.set("trust proxy", 1)
 }
 
 app.use(cors({
@@ -36,7 +56,8 @@ app.use(cors({
 
     callback(new Error(`CORS blocked for origin: ${origin}`))
   },
-  credentials: true
+  credentials: true,
+  optionsSuccessStatus: 200
 }))
 app.use(express.json())
 app.use(cookieParser())

@@ -12,8 +12,10 @@ import Pricing from './pages/Pricing'
 import InterviewReport from './pages/InterviewReport'
 
 const getServerUrl = () => {
-  if (import.meta.env.VITE_SERVER_URL) {
-    return import.meta.env.VITE_SERVER_URL
+  const envServerUrl = import.meta.env.VITE_SERVER_URL?.trim()
+
+  if (envServerUrl) {
+    return envServerUrl.replace(/\/$/, "")
   }
 
   if (typeof window !== "undefined") {
@@ -23,10 +25,10 @@ const getServerUrl = () => {
       return "http://localhost:8000"
     }
 
-    return window.location.origin
+    return "https://talentlens-ai-5ore.onrender.com"
   }
 
-  return "http://localhost:8000"
+  return "https://talentlens-ai-5ore.onrender.com"
 }
 
 export const ServerUrl = getServerUrl()
