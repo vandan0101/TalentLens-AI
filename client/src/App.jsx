@@ -11,7 +11,7 @@ import InterviewHistory from './pages/InterviewHistory'
 import Pricing from './pages/Pricing'
 import InterviewReport from './pages/InterviewReport'
 
-export const ServerUrl = import.meta.env.VITE_SERVER_URL || "https://talentlens-ai-5ore.onrender.com"
+export const ServerUrl =  "https://talentlens-ai-5ore.onrender.com"
 
 function App() {
 
